@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재미있는 키보드 글자 연습</title>
+    <style>
+        /* 기본 설정 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #fffaf0; /* 아기자기한 아이보리 배경 */
+            font-family: 'Jalnan', 'Malgun Gothic', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* 전체 레이아웃 (좌우 2분할 컨테이너) */
+        .practice-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            max-height: 780px;
+            background-color: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 4px solid #a8e6cf; /* 싱그러운 민트 테두리 */
+            overflow: hidden;
+        }
+
+        /* 왼쪽 영역 (키보드 이미지 + 버튼 설명) */
+        .left-section {
+            width: 42%;
+            background-color: #f0f9ff;
+            border-right: 3px dashed #bae6fd;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 상단 키보드 이미지 공간 */
+        .keyboard-img-box {
+            width: 100%;
+            height: 220px;
+            background-color: #ffffff;
+            border: 2px dashed #7dd3fc;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .keyboard-img-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .img-placeholder {
+            font-size: 0.9rem;
+            color: #0284c7;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* 키 설명 리스트 상자 */
+        .key-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .guide-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid #e0f2fe;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        /* 실제 키보드 비율을 살린 버튼 디자인 */
+        .key-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* 각 키별 사이즈 및 색상 설정 */
+        .key-hanyoung {
+            width: 85px;
+            height: 38px;
+            background-color: #3b82f6;
+            border-bottom: 3px solid #1d4ed8;
+            font-size: 0.95rem;
+        }
+
+        .key-space {
+            width: 115px;
+            height: 38px;
+            background-color: #3b82f6;
+            border-bottom: 3px solid #1d4ed8;
+            font-size: 0.85rem;
+        }
+
+        .key-enter {
+            width: 95px;
+            height: 38px;
+            background-color: #3b82f6;
+            border-bottom: 3px solid #1d4ed8;
+            font-size: 0.95rem;
+        }
+
+        .key-backspace {
+            width: 105px;
+            height: 38px;
+            background-color: #10b981;
+            border-bottom: 3px solid #047857;
+            font-size: 0.8rem;
+        }
+
+        .key-delete {
+            width: 85px;
+            height: 38px;
+            background-color: #10b981;
+            border-bottom: 3px solid #047857;
+            font-size: 0.9rem;
+        }
+
+        /* 버튼 옆 설명 텍스트 */
+        .key-desc {
+            font-size: 0.9rem;
+            color: #334155;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        /* 오른쪽 영역 (글자 연습장 메모장) */
+        .right-section {
+            width: 58%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            background-color: #fffaf0;
+        }
+
+        .memo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .memo-title {
+            font-size: 1.6rem;
+            color: #ff6b7b;
+            font-weight: bold;
+        }
+
+        /* 전부 지우기 버튼 */
+        .clear-btn {
+            background-color: #ff8b94;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(255, 139, 148, 0.3);
+            transition: all 0.2s;
+        }
+
+        .clear-btn:hover {
+            background-color: #ff6b7b;
+            transform: translateY(-2px);
+        }
+
+        /* 큼직하고 입력하기 편한 텍스트에어리어 (메모장 상자) */
+        textarea.memo-box {
+            flex: 1;
+            width: 100%;
+            padding: 20px;
+            font-size: 2.2rem; /* 저학년이 보기 좋은 커다란 글자 크기 */
+            font-family: 'Jalnan', 'Malgun Gothic', sans-serif;
+            color: #2d3748;
+            background-color: #ffffff;
+            border: 3px solid #cbd5e0;
+            border-radius: 20px;
+            resize: none;
+            outline: none;
+            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.02);
+            line-height: 1.5;
+        }
+
+        /* placeholder(안내문구)를 연회색으로 지정 */
+        textarea.memo-box::placeholder {
+            color: #a0aec0;
+            font-size: 1.4rem;
+        }
+
+        /* 입력 상자를 클릭하거나 초기가 되었을 때 테두리 강조 */
+        textarea.memo-box:focus {
+            border-color: #ff8b94;
+            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.02), 0 0 10px rgba(255, 139, 148, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="practice-container">
+        <!-- 왼쪽 영역: 상단 키보드 이미지 + 하단 키 설명 -->
+        <div class="left-section">
+            <!-- 상단 키보드 이미지 공간 (keyboard.jpg) -->
+            <div class="keyboard-img-box">
+                <img src="img/keyboard.jpg" alt="키보드 그림" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="img-placeholder" style="display:none;">키보드 이미지 파일<br>(keyboard.jpg)을 넣어주세요</div>
+            </div>
+
+            <!-- 하단 키 설명 영역 -->
+            <div class="key-list">
+                <div class="guide-item">
+                    <div class="key-box key-hanyoung">한 / 영</div>
+                    <div class="key-desc">한글과 영어를 서로 바꿔줘요!</div>
+                </div>
+                <div class="guide-item">
+                    <div class="key-box key-space">스페이스바</div>
+                    <div class="key-desc">글자 사이를 띄어줘요 (띄어쓰기)</div>
+                </div>
+                <div class="guide-item">
+                    <div class="key-box key-enter">Enter</div>
+                    <div class="key-desc"> (엔터) 다음 줄로 내려가요 (줄바꿈)</div>
+                </div>
+                <div class="guide-item">
+                    <div class="key-box key-backspace">← Backspace</div>
+                    <div class="key-desc"> (백스페이스) 바로 앞 글자를 지워줘요</div>
+                </div>
+                <div class="guide-item">
+                    <div class="key-box key-delete">Delete</div>
+                    <div class="key-desc"> (딜리트) 커서 뒤쪽 글자를 지워줘요</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 오른쪽 영역: 글자 연습장 메모장 -->
+        <div class="right-section">
+            <div class="memo-header">
+                <span class="memo-title">📝 글자 연습장</span>
+                <button class="clear-btn" onclick="clearMemo()">전부 지우기 🧹</button>
+            </div>
+            <!-- 글자가 연회색인 placeholder 및 autofocus 적용 -->
+            <textarea id="myMemo" class="memo-box" placeholder="이곳을 클릭하고 이름을 적어보세요!" autofocus></textarea>
+        </div>
+    </div>
+
+    <script>
+        // 전부 지우기 버튼 기능
+        function clearMemo() {
+            const memoBox = document.getElementById('myMemo');
+            memoBox.value = '';
+            memoBox.focus(); // 지운 후 다시 커서 위치시키기
+        }
+
+        // 우클릭 방지 코드
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+    </script>
+
+</body>
+</html>

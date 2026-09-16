@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키보드 연습 메인</title>
+    <style>
+        /* 기본 설정 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #fffaf0; /* 아기자기한 아이보리 배경 */
+            font-family: 'Jalnan', 'Malgun Gothic', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* 민트색 바깥 테두리 메인 컨테이너 */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            max-width: 800px;
+            max-height: 700px;
+            background-color: #ffffff;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 4px solid #a8e6cf; /* 싱그러운 민트 테두리 */
+            padding: 40px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* 상단 키보드 이미지 공간 */
+        .keyboard-img-box {
+            width: 100%;
+            height: 320px;
+            background-color: #f0f9ff;
+            border: 2px dashed #7dd3fc;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .keyboard-img-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .img-placeholder {
+            font-size: 1.1rem;
+            color: #0284c7;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        /* 하단 버튼 배치 영역 */
+        .button-area {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* 키보드 키 모양의 네모난 큰 버튼 스타일 */
+        .key-button {
+            width: 260px;
+            height: 140px;
+            background-color: #3b82f6; /* 파란색 키보드 키 느낌 */
+            color: white;
+            border: none;
+            border-bottom: 8px solid #1d4ed8; /* 입체적인 키보드 효과 */
+            border-radius: 20px;
+            font-size: 1.8rem;
+            font-family: 'Jalnan', 'Malgun Gothic', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+            transition: all 0.1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* 메모장 버튼은 색상을 다르게 주어 구분 */
+        .key-button.memo-btn {
+            background-color: #10b981;
+            border-bottom: 8px solid #047857;
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .key-button:active {
+            transform: translateY(4px);
+            border-bottom-width: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container">
+        <!-- 상단 키보드 이미지 공간 -->
+        <div class="keyboard-img-box">
+            <img src="img/keyboard.jpg" alt="키보드 그림" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="img-placeholder" style="display:none;">
+                키보드 이미지 파일<br>(img/keyboard.jpg)을 넣어주세요
+            </div>
+        </div>
+
+        <!-- 하단 키보드 키 모양 버튼 2개 -->
+        <div class="button-area">
+            <!-- 1번 버튼: 레벨1 (기본자리) -->
+            <!-- 💡 quotes 안에 이동할 레벨1 페이지 파일명을 적어주세요 (예: location.href='level1.html';) -->
+            <button class="key-button" onclick="location.href='level1_taja.html';">
+                레벨1<br>(기본자리)
+            </button>
+
+            <!-- 2번 버튼: 메모장 -->
+            <!-- 💡 quotes 안에 이동할 메모장 페이지 파일명을 적어주세요 (예: location.href='memo.html';) -->
+            <button class="key-button memo-btn" onclick="location.href='key_memo.html';">
+                메모장
+            </button>
+        </div>
+    </div>
+
+</body>
+
+</html>

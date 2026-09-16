@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>더블클릭 연습 메뉴</title>
+    <style>
+        /* 기본 설정 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            background-color: #fffaf0; /* 아기자기하고 따뜻한 아이보리 배경 */
+            font-family: 'Jalnan', 'Malgun Gothic', sans-serif; /* 둥근 느낌의 폰트 우선 적용 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 메뉴를 감싸는 컨테이너 */
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* 버튼 사이 간격 */
+            width: 80%;
+            max-width: 600px;
+            align-items: center;
+        }
+
+        /* 큰 메뉴 버튼 공통 스타일 (저학년 맞춤형 큼직하고 둥근 디자인) */
+        .big-btn {
+            width: 100%;
+            padding: 25px 20px;
+            font-size: 1.8rem; /* 큼직한 글자 크기 */
+            font-weight: bold;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px; /* 동글동글한 모서리 */
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* 1번 버튼: 컴퓨터 구성장치 알아보기 (상큼한 코랄/핑크빛) */
+        .btn-1 {
+            background-color: #ff8b94;
+        }
+        .btn-1:hover {
+            background-color: #ff707d;
+            transform: translateY(-4px); /* 마우스 올리면 톡 튀어오르는 효과 */
+            box-shadow: 0 10px 20px rgba(255, 139, 148, 0.4);
+        }
+        .btn-1:active {
+            transform: translateY(2px);
+        }
+
+        /* 2번 버튼: 빈 버튼 (귀여운 상큼 민트빛) */
+        .btn-2 {
+            background-color: #a8e6cf;
+        }
+        .btn-2:hover {
+            background-color: #91dfbe;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(168, 230, 207, 0.4);
+        }
+        .btn-2:active {
+            transform: translateY(2px);
+        }
+
+        /* 3번 버튼: 빈 버튼 (화사한 레몬노랑빛) */
+        .btn-3 {
+            background-color: #ffd3b6;
+            color: #555555; /* 노란 바탕에는 글씨를 진하게 하여 가독성 높임 */
+        }
+        .btn-3:hover {
+            background-color: #ffc299;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(255, 211, 182, 0.4);
+        }
+        .btn-3:active {
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <!-- 첫 번째 버튼: 컴퓨터 구성장치 알아보기 -->
+        <!-- a 태그의 href 속성에 이동할 새 페이지 주소를 넣어주세요 (예: computer_parts.html) -->
+        <a href="com_name.html" class="big-btn btn-1">💻 컴퓨터 구성장치 알아보기</a>
+
+        <!-- 두 번째 버튼 (비워둔 버튼) -->
+        <!-- 필요할 때 a 태그로 감싸거나 버튼 안에 내용을 채워 사용하세요 -->
+        <button class="big-btn btn-2" onclick="alert('사랑해요')">✨준비중</button>
+
+        <!-- 세 번째 버튼 (비워둔 버튼) -->
+        <button class="big-btn btn-3" onclick="alert('멋진 학생이군요')">🌟 준비중</button>
+    </div>
+
+</body>
+</html>

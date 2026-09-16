@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마우스 놀이터</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        p.subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .card h3 {
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+        .cursor-icon {
+            font-size: 1.5rem;
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+        .card p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .interactive-zone {
+            height: 140px;
+            background: #eef2f3;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        /* 1. 기본 화살표 */
+        .zone-default { cursor: default; background: #e0f2fe; }
+
+        /* 2. 손가락 모양 (클릭 전환) */
+        .zone-pointer { cursor: pointer; background: #dcfce7; flex-direction: column; text-align: center; }
+        .clickable-box {
+            background: #22c55e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+        }
+        .clickable-box:hover { background: #16a34a; }
+        .sub-page {
+            display: none;
+            text-align: center;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        /* 3. 텍스트 입력 커서 */
+        .zone-text { cursor: text; background: #fef9c3; justify-content: flex-start; padding-left: 15px; }
+        .text-input-field {
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            outline: none;
+            width: 100%;
+            cursor: text;
+        }
+
+        /* 4. 개체 이동 커서 (드래그) */
+        .zone-move { background: #fae8ff; justify-content: flex-start; align-items: flex-start; padding: 10px; }
+        .drop-target {
+            position: absolute;
+            right: 15px;
+            top: 25px;
+            width: 70px;
+            height: 70px;
+            border: 2px dashed #d946ef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #a21caf;
+            background: rgba(232, 121, 249, 0.1);
+        }
+        .draggable-animal {
+            width: 60px;
+            height: 60px;
+            background: #f472b6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: move;
+            position: absolute;
+            left: 15px;
+            top: 35px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        /* 5. 가로 크기 조절 (좌우 가장자리에서만 조절) */
+        .zone-resize-ew { background: #ffedd5; }
+        .resizable-box.ew {
+            width: 120px;
+            height: 70px;
+            background: #f97316;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            resize: horizontal;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 6. 세로 크기 조절 (위아래 가장자리에서만 조절) */
+        .zone-resize-ns { background: #ffe4e6; }
+        .resizable-box.ns {
+            width: 120px;
+            height: 70px;
+            background: #e11d48;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            resize: vertical;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 7. 대각선 크기 조절 */
+        .zone-resize-diag { background: #e0e7ff; }
+        .resizable-box.diag {
+            width: 120px;
+            height: 70px;
+            background: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            resize: both;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #333;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>컴퓨터의 🪄요술 손가락 🖱️마우스 포인터</h1>
+        <p class="subtitle">마우스 포인터 모양에 따라 실제로 어떤 작업이 일어나는지 직접 체험해 보세요!</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div>
+                <span class="badge">기본형</span>
+                <div class="card-header">
+                    <h3>화살표 커서</h3>
+                    <span class="cursor-icon">↖️</span>
+                </div>
+                <p>화면을 가리키거나 평상시의 기본 상태를 나타냅니다.</p>
+            </div>
+            <div class="interactive-zone zone-default">
+                마우스를 올려보세요 (기본)
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <span class="badge">손가락 모양</span>
+                <div class="card-header">
+                    <h3>링크/버튼 커서</h3>
+                    <span class="cursor-icon">👆</span>
+                </div>
+                <p>버튼을 클릭하면 안의 작은 페이지나 내용이 바뀝니다.</p>
+            </div>
+            <div class="interactive-zone zone-pointer" id="clickZone">
+                <div class="clickable-box" id="mainButton">여기를 클릭해보세요!</div>
+                <div class="sub-page" id="subPage">
+                    🎉 화면이 전환되었습니다!<br>
+                    <span style="font-size: 0.8rem; color: #15803d; cursor: pointer; text-decoration: underline;" id="backButton">돌아가기</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <span class="badge">I자 모양</span>
+                <div class="card-header">
+                    <h3>글자 입력 커서</h3>
+                    <span class="cursor-icon">🔤</span>
+                </div>
+                <p>클릭하면 깜빡이는 커서가 생기고 직접 글자를 타이핑할 수 있습니다.</p>
+            </div>
+            <div class="interactive-zone zone-text">
+                <input type="text" class="text-input-field" placeholder="클릭해서 글자를 입력하세요...">
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <span class="badge">십자 화살표</span>
+                <div class="card-header">
+                    <h3>개체 이동 커서</h3>
+                    <span class="cursor-icon">✥</span>
+                </div>
+                <p>동물 개체 위에 마우스를 올리면 모양이 바뀌며 오른쪽 그림자 위치로 옮길 수 있습니다.</p>
+            </div>
+            <div class="interactive-zone zone-move" id="dropZone">
+                <div class="drop-target">여기에<br>쏙!</div>
+                <div class="draggable-animal" id="animal" draggable="true">🐶</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <span class="badge">좌우 화살표</span>
+                <div class="card-header">
+                    <h3>가로 크기 조절</h3>
+                    <span class="cursor-icon">↔️</span>
+                </div>
+                <p>상자의 <b>왼쪽 또는 오른쪽 가장자리</b>에 마우스를 올리면 좌우 화살표로 바뀌며 가로 크기를 조절할 수 있습니다.</p>
+            </div>
+            <div class="interactive-zone zone-resize-ew">
+                <div class="resizable-box ew">가로 조절 상자</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <span class="badge">상하 화살표</span>
+                <div class="card-header">
+                    <h3>세로 크기 조절</h3>
+                    <span class="cursor-icon">↕️</span>
+                </div>
+                <p>상자의 <b>위쪽 또는 아래쪽 가장자리</b>에 마우스를 올리면 상하 화살표로 바뀌며 세로 크기를 조절할 수 있습니다.</p>
+            </div>
+            <div class="interactive-zone zone-resize-ns">
+                <div class="resizable-box ns">세로 조절 상자</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div>
+                <span class="badge">대각선 화살표</span>
+                <div class="card-header">
+                    <h3>대각선 크기 조절</h3>
+                    <span class="cursor-icon">⤢</span>
+                </div>
+                <p>상자의 <b>모서리</b>에 마우스를 올리면 대각선 화살표로 바뀌며 가로세로를 동시에 조절할 수 있습니다.</p>
+            </div>
+            <div class="interactive-zone zone-resize-diag">
+                <div class="resizable-box diag">대각선 조절 상자</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 2번: 손가락 클릭 시 작은 페이지 전환 기능
+        const mainButton = document.getElementById('mainButton');
+        const subPage = document.getElementById('subPage');
+        const backButton = document.getElementById('backButton');
+
+        mainButton.addEventListener('click', () => {
+            mainButton.style.display = 'none';
+            subPage.style.display = 'block';
+        });
+
+        backButton.addEventListener('click', () => {
+            subPage.style.display = 'none';
+            mainButton.style.display = 'block';
+        });
+
+        // 4번: 동물 개체 드래그 앤 드롭 이동 기능
+        const animal = document.getElementById('animal');
+        const dropZone = document.getElementById('dropZone');
+
+        let offsetX = 0, offsetY = 0, isDragging = false;
+
+        animal.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - animal.offsetLeft;
+            offsetY = e.clientY - animal.offsetTop;
+            animal.style.zIndex = 10;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            let x = e.clientX - offsetX;
+            let y = e.clientY - offsetY;
+            
+            animal.style.left = `${Math.max(10, Math.min(x, dropZone.clientWidth - 70))}px`;
+            animal.style.top = `${Math.max(10, Math.min(y, dropZone.clientHeight - 70))}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            animal.style.zIndex = 1;
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강쌤과 함께 하는 컴퓨터교실</title>
+    <style>
+        /* 기본 설정 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Jalnan', 'Malgun Gothic', sans-serif;
+            overflow: hidden;
+            background-color: #fffaf0;
+        }
+
+        /* 전체 레이아웃 (상단 15%, 하단 85%) */
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 상단 영역 (15%) */
+        header {
+            height: 15%;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            color: #2d3748;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 20px;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 타이틀 */
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #2c5282;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+        }
+
+        /* 상단 메뉴바 */
+        nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 메뉴 버튼 스타일 */
+        .menu-btn {
+            background-color: #ffffff;
+            color: #4a5568;
+            border: 2px solid #cbd5e0;
+            padding: 6px 16px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* 마우스 호버 효과 */
+        .menu-btn:hover {
+            background-color: #ff8b94;
+            color: white;
+            border-color: #ff8b94;
+            transform: translateY(-2px);
+        }
+
+        /* 클릭(활성화) 효과 */
+        .menu-btn:active, .menu-btn.active {
+            background-color: #ff6b7b;
+            color: white;
+            border-color: #ff6b7b;
+            transform: scale(0.95);
+        }
+
+        /* 하단 영역 (85%) */
+        main {
+            height: 85%;
+            display: flex;
+            flex-direction: column;
+            background-color: #fffaf0;
+        }
+
+        /* 각 메뉴 페이지가 로드될 콘텐츠 영역 */
+        #content-frame {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background-color: #fffaf0;
+            overflow-y: auto;
+        }
+
+        /* 제작자 정보 영역 (페이지 제일 아래) */
+        footer {
+            height: 35px;
+            background-color: #f7fafc;
+            color: #718096;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-top: 2px dashed #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 상단 영역 (15%) -->
+        <header>
+            <h1>🌟 강쌤과 함께 하는 컴퓨터교실 🌟</h1>
+            <nav>
+                <button class="menu-btn" onclick="loadPage('mouse_pointer.html', this)">마우스 포인터</button>
+                <button class="menu-btn" onclick="loadPage('click.html', this)">클릭</button>
+                <button class="menu-btn" onclick="loadPage('drag.html', this)">드래그</button>
+                <button class="menu-btn" onclick="loadPage('doubleclick.html', this)">더블클릭</button>
+                <button class="menu-btn" onclick="loadPage('text_study.html', this)">키보드</button>
+                <button class="menu-btn" onclick="loadPage('computer_bingo.html', this)">즐기기</button>
+            </nav>
+        </header>
+
+        <!-- 하단 영역 (85%) -->
+        <main>
+            <iframe id="content-frame" src="default.html" name="subcontent"></iframe>
+
+            <footer>
+                <p>제작자: 강희경 with 제미나이</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // 메뉴 클릭 시 하단 영역에 해당 페이지를 연결하고 버튼 활성화 상태를 관리하는 함수
+        function loadPage(pageUrl, buttonElement) {
+            // 1. 하단 프레임(iframe)에 링크 연결
+            document.getElementById('content-frame').src = pageUrl;
+
+            // 2. 모든 메뉴 버튼의 active 클래스 제거
+            const buttons = document.querySelectorAll('.menu-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // 3. 클릭한 버튼에만 active 클래스 추가하여 색상 유지
+            buttonElement.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
